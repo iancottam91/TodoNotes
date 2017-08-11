@@ -41,6 +41,8 @@ export default class Items extends Component {
 
   render() {
 
+    console.log('notes: ' + this.props.notes.length);
+
     return (
       <View style={styles.myNotes}>
         <ListView
