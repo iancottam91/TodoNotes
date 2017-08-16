@@ -5,7 +5,7 @@ import {
   StyleSheet,
   ListView,
 } from 'react-native';
-import ListItem from './ListItem';
+import NoteItem from './NoteItem';
 
 const styles = StyleSheet.create({
   myNotes: {
@@ -19,10 +19,11 @@ const styles = StyleSheet.create({
 
 export default class Items extends Component {
 
-  constructor(props) {
-    super(props);
-    const { todos, notes } = this.props;
-    let items = [...todos, ...notes];
+
+  render() {
+
+    const { todoLists, notes } = this.props;
+    let items = [...todoLists, ...notes];
 
     items.sort(function(a,b){
       if(a.lastUpdated > b.lastUpdated){
@@ -37,17 +38,12 @@ export default class Items extends Component {
     this.state = {
       dataSource: ds.cloneWithRows(items),
     };
-  }
-
-  render() {
-
-    console.log('notes: ' + this.props.notes.length);
 
     return (
       <View style={styles.myNotes}>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => <ListItem title={rowData.title} date={rowData.lastUpdated}/>}
+          renderRow={(rowData) => <NoteItem title={rowData.title} content={rowData.content} date={rowData.lastUpdated}/>}
         />
       </View>
     );

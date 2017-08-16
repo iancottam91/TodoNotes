@@ -15,11 +15,13 @@ import {
 import { connect } from 'react-redux';
 import { addNote, removeNote } from '../store/actions/note';
 import Items from '../components/Items';
+import TodoListItem from '../components/TodoListItem';
+import ListView from '../todoList/ListView';
 
 class CreateScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
-    title: 'Create ' + navigation.state.params.type,
+    title: 'Create To Do List Connected',
   });
 
   constructor() {
@@ -32,11 +34,11 @@ class CreateScreen extends Component {
 
   render() {
 
-    console.log(this.state);
+    const { todoLists } = this.props.todo;
+    const todoList = todoLists[0];
 
     return (
       <View style={styles.container}>
-      {/* note first */}
         <TextInput
           style={{
             height: 60,
@@ -45,21 +47,17 @@ class CreateScreen extends Component {
             fontWeight: 'bold',
           }}
           placeholder={'Title'}
+          defaultValue={todoList.title}
           onChangeText={(text) => this.setState({noteTitle: text})}
         />
-        <TextInput
-          style={{
-            color: 'gray',
-            fontSize: 20,
-            padding: 20,
-            textAlignVertical: 'top',
-            flex: 1,
-            alignSelf: 'stretch',
-          }}
-          multiline={true}
-          placeholder={'Note'}
-          onChangeText={(text) => this.setState({noteContent: text})}
-        />
+        {todoList.todoItems.map(function(todo){
+          return <TodoListItem data={{completed: todo.completed, title: todo.text}} onCompletedChange={ () => {alert('pressed')} } />;
+        })}
+        {/* onCompletedChange - dispatch action to set todo as checked */}
+
+
+        {/*<ListView />*/}
+
       </View>
     );
   }

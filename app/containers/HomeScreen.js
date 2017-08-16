@@ -24,7 +24,7 @@ class HomeScreen extends Component {
 
   constructor(props){
     super(props);
-    this.state = {createOptsHidden: true};
+    this.state = {createOptsHidden: false};
     this.create = this.create.bind(this);
     this.createOptsStyle = this.createOptsStyle.bind(this);
     this.addItem = this.addItem.bind(this);
@@ -38,8 +38,12 @@ class HomeScreen extends Component {
 
   addItem(type) {
     const { navigate } = this.props.navigation;
-    console.log('type: ' + type);
     navigate('Create', { type })
+  }
+
+  addTodo() {
+    const { navigate } = this.props.navigation;
+    navigate('CreateTodo');
   }
 
   createOptsStyle() {
@@ -51,10 +55,6 @@ class HomeScreen extends Component {
   }
 
   render() {
-
-    console.log('ASDFASDFASDFASDFASDFASDFADF');
-    console.log(this.props.note.notes.length);
-
 
     return (
       <View style={styles.container}>
@@ -71,10 +71,10 @@ class HomeScreen extends Component {
             />
             <Button
               title={'Create To do List'}
-              onPress={() => {this.addItem('todo')}}
+              onPress={() => {this.addTodo()}}
             />
         </View>
-        <Items todos={this.props.todo.todos} notes={this.props.note.notes} />
+        <Items todoLists={this.props.todo.todoLists} notes={this.props.note.notes} />
       </View>
     );
   }

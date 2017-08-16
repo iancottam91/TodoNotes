@@ -5,15 +5,38 @@ import {
 import { uuidv4 } from '../../utils/uuid';
 
 export const defaultState = {
-  todos: [{
+  todoLists: [{
      title: 'Todo 1',
+     content: 'job 1',
+     todoItems: [
+      {
+        text: 'Cut the grass',
+        completed: false,
+      },
+      {
+        text: 'Clean the shed',
+        completed: false,
+      },
+      {
+        text: 'Play golf',
+        completed: false,
+      },
+
+     ],
      id: '123',
      lastUpdated: new Date(2015, 7, 5),
-   },{
-     title: 'Todo 2',
-     id: '142',
-     lastUpdated: new Date(2017, 1, 1),
-   }],
+  },{
+    title: 'Todo 2',
+    content: 'job 2',
+    todoItems: [
+     {
+       text: 'Play Cricket',
+       completed: false,
+     }
+    ],
+    id: '123',
+    lastUpdated: new Date(2015, 7, 5),
+  }],
 };
 
 const todo = (state = defaultState, action) => {
@@ -21,8 +44,8 @@ const todo = (state = defaultState, action) => {
     case ADD_TODO:
       return {
         ...state,
-        todos: [
-          ...state.todos,
+        todoLists: [
+          ...state.todoLists,
           {
             title: action.todoText,
             id: action.id ? action.id : uuidv4(),
@@ -34,7 +57,7 @@ const todo = (state = defaultState, action) => {
     case REMOVE_TODO: {
       return {
         ...state,
-        todos: state.todos.filter((value, idx) => {
+        todoLists: state.todoLists.filter((value, idx) => {
           return Array.isArray(action.index)
             ? action.index.indexOf(idx) === -1
             : action.index !== idx;

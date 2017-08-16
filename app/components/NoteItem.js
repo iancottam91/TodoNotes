@@ -5,10 +5,11 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const ListItem = ({title, date}) =>
+const ListItem = ({title, content, date}) =>
   <View>
     <Text>{title}</Text>
-    <Text>{date.toString()}</Text>
+    <Text>{content}</Text>
+    <Text>{date.toDateString()}</Text>
   </View>;
 
 export default ListItem;
