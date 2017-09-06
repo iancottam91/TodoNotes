@@ -1,0 +1,2 @@
+- go into components/Items.js and create a link to edit Todos
+- Then change EditTodoScreen JS so that it gets the correct stuff from the store
