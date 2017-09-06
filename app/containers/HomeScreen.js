@@ -43,7 +43,7 @@ class HomeScreen extends Component {
 
   addTodo() {
     const { navigate } = this.props.navigation;
-    navigate('CreateTodo');
+    navigate('EditTodo');
   }
 
   createOptsStyle() {

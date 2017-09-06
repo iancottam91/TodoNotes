@@ -1,9 +1,10 @@
 export const ADD_TODO = 'ADD_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
 
-export const addTodo = (todoText, id) => ({
+export const addTodo = (todoTitle, todoItems, id) => ({
   type: ADD_TODO,
-  todoText,
+  todoTitle,
+  todoItems,
   id,
 });
 

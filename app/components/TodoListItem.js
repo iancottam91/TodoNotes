@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { View, Text } from 'react-native';
 import Checkbox from './Checkbox';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 class ListViewItem extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class ListViewItem extends Component {
       <View style={{paddingTop: 6, paddingBottom: 6, backgroundColor: "#F8F8F8", borderBottomWidth:1, borderColor: '#eee', flexDirection: 'row', alignItems: 'center'}}>
         <Checkbox data={data} color={color} onCheckBoxPressed={this._onCheckBoxPressed}></Checkbox>
         <Text style={{fontSize:18, color: color, textDecorationLine: textDecorationLine}}>{data.title}</Text>
+        <Icon style={{alignSelf: 'flex-end'}} name="highlight-off" size={20} onPress={this.props.onPressDelete}></Icon>
       </View>
     )
   }

@@ -47,7 +47,8 @@ const todo = (state = defaultState, action) => {
         todoLists: [
           ...state.todoLists,
           {
-            title: action.todoText,
+            title: action.todoTitle,
+            todoItems: action.todoItems,
             id: action.id ? action.id : uuidv4(),
             lastUpdated: new Date(),
           },
