@@ -9,7 +9,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Button
+  Button,
+  Picker,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { addNote, removeNote } from '../store/actions/note';
@@ -19,12 +20,15 @@ import { navigate } from 'react-navigation';
 class HomeScreen extends Component {
 
   static navigationOptions = {
-    title: 'Ian\'s Notes and Todos TEST',
+    title: 'Ian\'s Notes and Todos',
   };
 
   constructor(props){
     super(props);
-    this.state = {createOptsHidden: false};
+    this.state = {
+      createOptsHidden: false,
+      tag: '',
+    };
     this.create = this.create.bind(this);
     this.createOptsStyle = this.createOptsStyle.bind(this);
     this.addItem = this.addItem.bind(this);
@@ -64,9 +68,11 @@ class HomeScreen extends Component {
     }
   }
 
+
   render() {
 
-    console.log('home screen calls render');
+    const { tagOptions } = this.props;
+    const { tag } = this.state;
 
     return (
       <View style={styles.container}>
@@ -77,16 +83,30 @@ class HomeScreen extends Component {
           accessibilityLabel="Learn more about this purple button"
         />
         <View style={this.createOptsStyle()}>
-            <Button
-              title={'Create Note'}
-              onPress={() => {this.addItem('note')}}
-            />
-            <Button
-              title={'Create To do List'}
-              onPress={() => {this.addTodo()}}
-            />
+          <Button
+            title={'Create Note'}
+            onPress={() => {this.addItem('note')}}
+          />
+          <Button
+            title={'Create To do List'}
+            onPress={() => {this.addTodo()}}
+          />
         </View>
-        <Items editNote={this.editNote.bind(this)} editTodo={this.editTodo.bind(this)} todoLists={this.props.todo.todoLists} notes={this.props.note.notes} />
+        <Picker
+          selectedValue={tag}
+          onValueChange={(itemValue, itemIndex) => this.setState({tag: itemValue})}>
+          <Picker.Item label='Filter by category...' value='' />
+          {tagOptions.map(function(tag, index){
+            return <Picker.Item label={tag} value={tag} />;
+          })}
+        </Picker>
+        <Items
+          tag={tag}
+          editNote={this.editNote.bind(this)}
+          editTodo={this.editTodo.bind(this)}
+          todoLists={this.props.todo.todoLists}
+          notes={this.props.note.notes}
+         />
       </View>
     );
   }
@@ -96,7 +116,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center',
     backgroundColor: '#FFFFFF',
     paddingTop: 10,
   },
@@ -105,6 +124,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   todo: state.todo,
   note: state.note,
+  tagOptions: state.tag,
 });
 
 const mapDispatchToProps = {

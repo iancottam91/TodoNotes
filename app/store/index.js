@@ -2,6 +2,7 @@ import ReduxThunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import note from './reducers/note';
 import todo from './reducers/todo';
+import tag from './reducers/tag';
 
 // Add redux Logger with default options in development
 const middlewares = [ReduxThunk];
@@ -15,7 +16,8 @@ const middlewares = [ReduxThunk];
 const store = createStore(
   combineReducers({
     note,
-    todo
+    todo,
+    tag,
   }),
   applyMiddleware(...middlewares)
 );

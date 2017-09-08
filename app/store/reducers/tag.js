@@ -2,9 +2,9 @@ import {
   ADD_TAG,
 } from '../actions/tag';
 
-export const defaultState = ['food', 'drink', 'random'];
+export const defaultState = ['all', 'food', 'drink', 'random'];
 
-const note = (state = defaultState, action) => {
+const tag = (state = defaultState, action) => {
   switch (action.type) {
     case ADD_TAG:
       return [

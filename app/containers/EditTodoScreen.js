@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { addTodo, editTodo } from '../store/actions/todo';
+import { addTag } from '../store/actions/tag';
 import Items from '../components/Items';
 import TodoListItem from '../components/TodoListItem';
 import ListView from '../todoList/ListView';
@@ -44,8 +45,8 @@ class CreateScreen extends Component {
         todoTitle: '',
         todoItems: [],
         newTodoItem: '',
+        tag: '',
       }
-      this.state = this.initialState;
     } else if (action === 'edit') {
       const { todoLists } = props.todo;
       const todoList = todoLists.filter(( todoList ) => {
@@ -56,11 +57,12 @@ class CreateScreen extends Component {
         todoTitle: todoList[0].title,
         todoItems: todoList[0].todoItems,
         newTodoItem: '',
+        tag: todoList[0].tag,
       }
 
-      this.state = this.initialState;
     }
 
+    this.state = this.initialState;
   }
 
   addItem(text) {
@@ -128,6 +130,16 @@ class CreateScreen extends Component {
           defaultValue={this.state.todoTitle}
           onChangeText={(text) => this.setState({todoTitle: text})}
         />
+        <TextInput style={{
+            height: 60,
+            fontSize: 20,
+            padding: 20,
+            fontWeight: 'bold',
+          }}
+          placeholder={'Category'}
+          defaultValue={this.state.tag}
+          onChangeText={(tag) => this.setState({tag})}
+        />
         {todoItems.map(function(todo, index){
           return <TodoListItem key={index} onPressDelete={ () => removeItem(index)  } data={{completed: todo.completed, title: todo.text}} onCompletedChange={ () => {completeChange(index)} } />;
         })}
@@ -148,11 +160,17 @@ class CreateScreen extends Component {
   componentWillUnmount(){
     if (this.action === 'create') {
       if (!compareJSON(this.initialState, this.state)) {
-        this.props.addTodo(this.state.todoTitle, this.state.todoItems);
+        this.props.addTodo(this.state.todoTitle, this.state.todoItems, this.state.tag);
+        if (this.props.tag.indexOf(this.state.tag) === -1) {
+          this.props.addTag(this.state.tag);
+        }
       }
     } else if (this.action === 'edit') {
       if (!compareJSON(this.initialState, this.state)) {
-        this.props.editTodo(this.state.todoTitle, this.state.todoItems, this.id);
+        this.props.editTodo(this.state.todoTitle, this.state.todoItems, this.state.tag, this.id);
+        if (this.props.tag.indexOf(this.state.tag) === -1) {
+          this.props.addTag(this.state.tag);
+        }
       }
     }
   }
@@ -169,12 +187,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   todo: state.todo,
-  note: state.note,
+  tag: state.tag,
 });
 
 const mapDispatchToProps = {
-  addTodo: (todoTitle, todoItems) => dispatch => dispatch(addTodo(todoTitle, todoItems)),
-  editTodo: (todoTitle, todoItems, id) => dispatch => dispatch(editTodo(todoTitle, todoItems, id)),
+  addTodo: (todoTitle, todoItems, todoTag) => dispatch => dispatch(addTodo(todoTitle, todoItems, todoTag)),
+  editTodo: (todoTitle, todoItems, todoTag, id) => dispatch => dispatch(editTodo(todoTitle, todoItems, todoTag, id)),
+  addTag: (tag) => dispatch => dispatch(addTag(tag)),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateScreen);

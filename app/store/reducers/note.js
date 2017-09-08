@@ -33,6 +33,7 @@ const note = (state = defaultState, action) => {
             content: action.noteContent,
             id: action.id ? action.id : uuidv4(),
             key: action.id ? action.id : uuidv4(),
+            tag: action.noteTag,
             lastUpdated: new Date(),
           },
         ],
@@ -51,6 +52,7 @@ const note = (state = defaultState, action) => {
       note.title = action.noteText;
       note.content = action.noteContent;
       note.lastUpdated = new Date();
+      note.tag = action.noteTag;
 
       newState.notes[index] = note;
 

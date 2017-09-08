@@ -54,6 +54,7 @@ const todo = (state = defaultState, action) => {
             todoItems: action.todoItems,
             id: action.id ? action.id : uuidv4(),
             key: action.id ? action.id : uuidv4(),
+            tag: action.todoTag,
             lastUpdated: new Date(),
           },
         ],
@@ -74,6 +75,7 @@ const todo = (state = defaultState, action) => {
       tdl.title = action.todoTitle;
       tdl.todoItems = action.todoItems;
       tdl.lastUpdated = new Date();
+      tdl.tag = action.todoTag,
 
       newState.todoLists[index] = tdl;
 

@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { addNote, removeNote, editNote } from '../store/actions/note';
+import { addTag } from '../store/actions/tag';
 import Items from '../components/Items';
 import { capitalizeFirstLetter, compareJSON } from '../utils/fns';
 
@@ -36,8 +37,8 @@ class EditNoteScreen extends Component {
       this.initialState = {
         noteTitle: '',
         noteContent: '',
+        tag: '',
       }
-      this.state = this.initialState;
     } else if (action === 'edit') {
       const { notes } = props.note;
       const note = notes.filter(( note ) => {
@@ -47,10 +48,10 @@ class EditNoteScreen extends Component {
       this.initialState = {
         noteTitle: note[0].title,
         noteContent: note[0].content,
+        tag: note[0].tag,
       }
-
-      this.state = this.initialState;
     }
+    this.state = this.initialState;
 
   }
 
@@ -58,7 +59,6 @@ class EditNoteScreen extends Component {
 
     return (
       <View style={styles.container}>
-      {/* note first */}
         <TextInput
           style={{
             height: 60,
@@ -69,6 +69,16 @@ class EditNoteScreen extends Component {
           placeholder={'Title'}
           defaultValue={this.state.noteTitle}
           onChangeText={(text) => this.setState({noteTitle: text})}
+        />
+        <TextInput style={{
+            height: 60,
+            fontSize: 20,
+            padding: 20,
+            fontWeight: 'bold',
+          }}
+          placeholder={'Category'}
+          defaultValue={this.state.tag}
+          onChangeText={(tag) => this.setState({tag})}
         />
         <TextInput
           style={{
@@ -92,11 +102,17 @@ class EditNoteScreen extends Component {
 
     if (this.action === 'create') {
       if (!compareJSON(this.initialState, this.state)) {
-        this.props.addNote(this.state.noteTitle, this.state.noteContent);
+        this.props.addNote(this.state.noteTitle, this.state.noteContent, this.state.tag);
+        if (this.props.tag.indexOf(this.state.tag) === -1) {
+          this.props.addTag(this.state.tag);
+        }
       }
     } else if (this.action === 'edit') {
       if (!compareJSON(this.initialState, this.state)) {
-        this.props.editNote(this.state.noteTitle, this.state.noteContent, this.id);
+        this.props.editNote(this.state.noteTitle, this.state.noteContent, this.state.tag, this.id);
+        if (this.props.tag.indexOf(this.state.tag) === -1) {
+          this.props.addTag(this.state.tag);
+        }
       }
     }
 
@@ -114,11 +130,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   note: state.note,
+  tag: state.tag,
 });
 
 const mapDispatchToProps = {
-  addNote: (noteText, noteContent) => dispatch => dispatch(addNote(noteText, noteContent)),
-  editNote: (noteText, noteContent, id) => dispatch => dispatch(editNote(noteText, noteContent, id)),
+  addNote: (noteText, noteContent, noteTag) => dispatch => dispatch(addNote(noteText, noteContent, noteTag)),
+  editNote: (noteText, noteContent, noteTag, id) => dispatch => dispatch(editNote(noteText, noteContent, noteTag, id)),
+  addTag: (tag) => dispatch => dispatch(addTag(tag)),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditNoteScreen);

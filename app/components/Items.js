@@ -34,9 +34,9 @@ export default class Items extends Component {
 
     let listItem = null;
     if (rowData.todoItems) {
-      listItem = <TodoItem key={rowData.id} editTodo={this.props.editTodo} title={rowData.title} date={rowData.lastUpdated} id={rowData.id} />
+      listItem = <TodoItem tag={rowData.tag} key={rowData.id} editTodo={this.props.editTodo} title={rowData.title} date={rowData.lastUpdated} id={rowData.id} />
     } else {
-      listItem = <NoteItem key={rowData.id} editNote={this.props.editNote} title={rowData.title} content={rowData.content} date={rowData.lastUpdated} id={rowData.id}/>
+      listItem = <NoteItem tag={rowData.tag} key={rowData.id} editNote={this.props.editNote} title={rowData.title} content={rowData.content} date={rowData.lastUpdated} id={rowData.id}/>
     }
     return listItem
   }
@@ -44,7 +44,7 @@ export default class Items extends Component {
 
   render() {
 
-    const { todoLists, notes } = this.props;
+    const { todoLists, notes, tag } = this.props;
     let items = [...todoLists, ...notes];
 
     items.sort(function(a,b){
@@ -56,11 +56,20 @@ export default class Items extends Component {
       return 0;
     })
 
+    const filteredItems = items.filter(function(item){
+      console.log(item.tag);
+      console.log(tag);
+      if(item.tag === tag || tag === 'all' || tag === ''){
+        return true;
+      }
+      return false;
+    });
+
 
     return (
       <View style={styles.myNotes}>
         <FlatList
-          data={items}
+          data={filteredItems}
           renderItem={(item) => this.listTodoNotes(item)}
         />
       </View>
