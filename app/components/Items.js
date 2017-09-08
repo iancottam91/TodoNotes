@@ -4,8 +4,10 @@ import {
   Text,
   StyleSheet,
   ListView,
+  FlatList,
 } from 'react-native';
 import NoteItem from './NoteItem';
+import TodoItem from './TodoItem';
 
 const styles = StyleSheet.create({
   myNotes: {
@@ -18,6 +20,26 @@ const styles = StyleSheet.create({
 });
 
 export default class Items extends Component {
+
+  constructor(props){
+    super(props);
+
+    this.listTodoNotes = this.listTodoNotes.bind(this);
+  }
+
+  listTodoNotes(data) {
+
+    console.log(data.item);
+    let rowData = data.item;
+
+    let listItem = null;
+    if (rowData.todoItems) {
+      listItem = <TodoItem key={rowData.id} editTodo={this.props.editTodo} title={rowData.title} date={rowData.lastUpdated} id={rowData.id} />
+    } else {
+      listItem = <NoteItem key={rowData.id} editNote={this.props.editNote} title={rowData.title} content={rowData.content} date={rowData.lastUpdated} id={rowData.id}/>
+    }
+    return listItem
+  }
 
 
   render() {
@@ -34,16 +56,12 @@ export default class Items extends Component {
       return 0;
     })
 
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {
-      dataSource: ds.cloneWithRows(items),
-    };
 
     return (
       <View style={styles.myNotes}>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => <NoteItem title={rowData.title} content={rowData.content} date={rowData.lastUpdated}/>}
+        <FlatList
+          data={items}
+          renderItem={(item) => this.listTodoNotes(item)}
         />
       </View>
     );

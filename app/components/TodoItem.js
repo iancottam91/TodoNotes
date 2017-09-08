@@ -7,12 +7,11 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { navigate } from 'react-navigation';
 
-const ListItem = ({title, content, date, editNote, id}) =>
+const TodoItem = ({title, date, editTodo, id}) =>
   <View key={id}>
-    <Icon name="description" size={20} />
+    <Icon name="view-list" size={20} />
     <Text>{title}</Text>
-    <Text>{content}</Text>
-    <Icon name="mode-edit" size={20} onPress={() => {editNote(id)}} ></Icon>
+    <Icon name="mode-edit" size={20} onPress={() => {editTodo(id)}}></Icon>
   </View>;
 
-export default ListItem;
+export default TodoItem;

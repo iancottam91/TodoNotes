@@ -3,11 +3,11 @@ import {
 } from 'react-navigation';
 
 import HomeScreen from './containers/HomeScreen';
-import CreateScreen from './containers/CreateScreen';
+import EditNoteScreen from './containers/EditNoteScreen';
 import EditTodoScreen from './containers/EditTodoScreen';
 
 export default App = StackNavigator({
   Home: { screen: HomeScreen },
-  Create: { screen: CreateScreen},
+  EditNote: { screen: EditNoteScreen},
   EditTodo: { screen: EditTodoScreen},
 });

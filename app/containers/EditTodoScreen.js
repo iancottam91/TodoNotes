@@ -13,15 +13,16 @@ import {
   TextInput,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { addTodo } from '../store/actions/todo';
+import { addTodo, editTodo } from '../store/actions/todo';
 import Items from '../components/Items';
 import TodoListItem from '../components/TodoListItem';
 import ListView from '../todoList/ListView';
+import { capitalizeFirstLetter, compareJSON } from '../utils/fns';
 
 class CreateScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
-    title: 'Create To Do List',
+    title: capitalizeFirstLetter(navigation.state.params.action) + ' To Do List',
   });
 
   constructor(props) {
@@ -32,14 +33,34 @@ class CreateScreen extends Component {
     this.onNewItemChange = this.onNewItemChange.bind(this);
     this.onNewItemKeyPress = this.onNewItemKeyPress.bind(this);
 
-    const { todoLists } = props.todo;
-    const todoList = todoLists[0];
+    // check if we're editing or creating
+    const { action, id }= this.props.navigation.state.params;
+    this.action = action;
+    this.id = id;
+    this.initialState = {};
 
-    this.state = {
-      todoTitle: todoList.title,
-      todoItems: todoList.todoItems,
-      newTodoItem: '',
+    if (action === 'create') {
+      this.initialState = {
+        todoTitle: '',
+        todoItems: [],
+        newTodoItem: '',
+      }
+      this.state = this.initialState;
+    } else if (action === 'edit') {
+      const { todoLists } = props.todo;
+      const todoList = todoLists.filter(( todoList ) => {
+        return todoList.id === id;
+      });
+
+      this.initialState = {
+        todoTitle: todoList[0].title,
+        todoItems: todoList[0].todoItems,
+        newTodoItem: '',
+      }
+
+      this.state = this.initialState;
     }
+
   }
 
   addItem(text) {
@@ -125,7 +146,15 @@ class CreateScreen extends Component {
   }
 
   componentWillUnmount(){
-    this.props.addTodo(this.state.todoTitle, this.state.todoItems)
+    if (this.action === 'create') {
+      if (!compareJSON(this.initialState, this.state)) {
+        this.props.addTodo(this.state.todoTitle, this.state.todoItems);
+      }
+    } else if (this.action === 'edit') {
+      if (!compareJSON(this.initialState, this.state)) {
+        this.props.editTodo(this.state.todoTitle, this.state.todoItems, this.id);
+      }
+    }
   }
 }
 
@@ -145,6 +174,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   addTodo: (todoTitle, todoItems) => dispatch => dispatch(addTodo(todoTitle, todoItems)),
+  editTodo: (todoTitle, todoItems, id) => dispatch => dispatch(editTodo(todoTitle, todoItems, id)),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateScreen);

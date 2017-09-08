@@ -19,7 +19,7 @@ import { navigate } from 'react-navigation';
 class HomeScreen extends Component {
 
   static navigationOptions = {
-    title: 'Ian\'s Notes and Todos',
+    title: 'Ian\'s Notes and Todos TEST',
   };
 
   constructor(props){
@@ -38,12 +38,22 @@ class HomeScreen extends Component {
 
   addItem(type) {
     const { navigate } = this.props.navigation;
-    navigate('Create', { type })
+    navigate('EditNote', {action: 'create'})
+  }
+
+  editNote(id) {
+    const { navigate } = this.props.navigation;
+    navigate('EditNote', { action: 'edit', id })
   }
 
   addTodo() {
     const { navigate } = this.props.navigation;
-    navigate('EditTodo');
+    navigate('EditTodo', {action: 'create'});
+  }
+
+  editTodo(id) {
+    const { navigate } = this.props.navigation;
+    navigate('EditTodo', { action: 'edit', id });
   }
 
   createOptsStyle() {
@@ -55,6 +65,8 @@ class HomeScreen extends Component {
   }
 
   render() {
+
+    console.log('home screen calls render');
 
     return (
       <View style={styles.container}>
@@ -74,7 +86,7 @@ class HomeScreen extends Component {
               onPress={() => {this.addTodo()}}
             />
         </View>
-        <Items todoLists={this.props.todo.todoLists} notes={this.props.note.notes} />
+        <Items editNote={this.editNote.bind(this)} editTodo={this.editTodo.bind(this)} todoLists={this.props.todo.todoLists} notes={this.props.note.notes} />
       </View>
     );
   }

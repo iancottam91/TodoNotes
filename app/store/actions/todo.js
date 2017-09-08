@@ -1,8 +1,16 @@
 export const ADD_TODO = 'ADD_TODO';
+export const EDIT_TODO = 'EDIT_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
 
 export const addTodo = (todoTitle, todoItems, id) => ({
   type: ADD_TODO,
+  todoTitle,
+  todoItems,
+  id,
+});
+
+export const editTodo = (todoTitle, todoItems, id) => ({
+  type: EDIT_TODO,
   todoTitle,
   todoItems,
   id,

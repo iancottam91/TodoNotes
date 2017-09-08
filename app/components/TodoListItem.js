@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import Checkbox from './Checkbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-class ListViewItem extends Component {
+export default class TodoListItem extends Component {
   constructor(props) {
     super(props);
     this._onCheckBoxPressed = this._onCheckBoxPressed.bind(this);
@@ -35,5 +35,3 @@ class ListViewItem extends Component {
     )
   }
 }
-
-module.exports = ListViewItem;
