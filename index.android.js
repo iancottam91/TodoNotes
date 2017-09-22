@@ -6,15 +6,6 @@
 
 import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
-import Entry from './app/Entry';
+import setup from './app/Entry';
 
-export default class AwesomeProject extends Component {
-
-  render() {
-    return (
-      <Entry />
-    );
-  }
-}
-
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+AppRegistry.registerComponent('AwesomeProject', setup);

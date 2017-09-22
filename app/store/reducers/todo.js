@@ -6,40 +6,7 @@ import {
 import { uuidv4 } from '../../utils/uuid';
 
 export const defaultState = {
-  todoLists: [{
-     title: 'Todo 1',
-     content: 'job 1',
-     todoItems: [
-      {
-        text: 'Cut the grass',
-        completed: false,
-      },
-      {
-        text: 'Clean the shed',
-        completed: false,
-      },
-      {
-        text: 'Play golf',
-        completed: false,
-      },
-
-     ],
-     id: '123',
-     key: '123',
-     lastUpdated: new Date(2015, 7, 5),
-  },{
-    title: 'Todo 2',
-    content: 'job 2',
-    todoItems: [
-     {
-       text: 'Play Cricket',
-       completed: false,
-     }
-    ],
-    id: '456',
-    key: '456',
-    lastUpdated: new Date(2015, 7, 5),
-  }],
+  todoLists: [],
 };
 
 const todo = (state = defaultState, action) => {

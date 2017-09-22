@@ -2,7 +2,7 @@ import {
   ADD_TAG,
 } from '../actions/tag';
 
-export const defaultState = ['all', 'food', 'drink', 'random'];
+export const defaultState = ['all'];
 
 const tag = (state = defaultState, action) => {
   switch (action.type) {

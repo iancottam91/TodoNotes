@@ -6,19 +6,7 @@ import {
 import { uuidv4 } from '../../utils/uuid';
 
 export const defaultState = {
-  notes: [{
-    title: 'Note 123',
-    content: 'Go to the shops',
-    id: 'adsf',
-    key: 'asdf',
-    lastUpdated: new Date(2016, 2, 8),
-  },{
-    title: 'Note B',
-    content: 'Cycle somewhere',
-    id: '142',
-    key: '142',
-    lastUpdated: new Date(2014, 3, 13),
-  }],
+  notes: [],
 };
 
 const note = (state = defaultState, action) => {

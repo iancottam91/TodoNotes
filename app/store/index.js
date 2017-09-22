@@ -1,8 +1,10 @@
 import ReduxThunk from 'redux-thunk';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import note from './reducers/note';
 import todo from './reducers/todo';
 import tag from './reducers/tag';
+import { AsyncStorage } from "react-native"
+import {persistStore, autoRehydrate} from 'redux-persist'
 
 // Add redux Logger with default options in development
 const middlewares = [ReduxThunk];
@@ -19,7 +21,13 @@ const store = createStore(
     todo,
     tag,
   }),
-  applyMiddleware(...middlewares)
+  undefined,
+  compose(
+    applyMiddleware(...middlewares),
+    autoRehydrate()
+  )
 );
+
+persistStore(store, {storage: AsyncStorage});
 
 export default store;
