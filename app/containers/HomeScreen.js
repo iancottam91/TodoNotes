@@ -11,36 +11,31 @@ import {
   View,
   Button,
   Picker,
+  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { addNote, removeNote } from '../store/actions/note';
 import Items from '../components/Items';
 import { navigate } from 'react-navigation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 class HomeScreen extends Component {
 
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Ian\'s Notes and Todos',
-  };
+    headerRight: <Text><Icon name="note-add" size={30} style={{marginLeft: 20,flex:1}} onPress={() => navigation.navigate('EditNote', {action: 'create'})}/>
+       <Icon name="playlist-add" size={30} style={{marginLeft: 20, flex:1}} onPress={() => navigation.navigate('EditTodo', {action: 'create'})} /></Text>
+  });
 
   constructor(props){
     super(props);
     this.state = {
-      createOptsHidden: false,
       tag: '',
     };
-    this.create = this.create.bind(this);
-    this.createOptsStyle = this.createOptsStyle.bind(this);
-    this.addItem = this.addItem.bind(this);
+//    this.addItem = this.addItem.bind(this);
   }
 
-  create() {
-    this.setState({
-      createOptsHidden: !this.state.createOptsHidden
-    })
-  }
-
-  addItem(type) {
+  static addItem(type) {
     const { navigate } = this.props.navigation;
     navigate('EditNote', {action: 'create'})
   }
@@ -60,15 +55,6 @@ class HomeScreen extends Component {
     navigate('EditTodo', { action: 'edit', id });
   }
 
-  createOptsStyle() {
-    if(this.state.createOptsHidden){
-      return {
-        display: 'none',
-      }
-    }
-  }
-
-
   render() {
 
     const { tagOptions } = this.props;
@@ -76,23 +62,8 @@ class HomeScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <Button
-          onPress={this.create}
-          title={this.state.createOptsHidden ? 'Create' : 'Collapse'}
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
-        <View style={this.createOptsStyle()}>
-          <Button
-            title={'Create Note'}
-            onPress={() => {this.addItem('note')}}
-          />
-          <Button
-            title={'Create To do List'}
-            onPress={() => {this.addTodo()}}
-          />
-        </View>
         <Picker
+          style={{marginBottom: 0}}
           selectedValue={tag}
           onValueChange={(itemValue, itemIndex) => this.setState({tag: itemValue})}>
           <Picker.Item label='Filter by category...' value='' />
@@ -117,7 +88,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     backgroundColor: '#FFFFFF',
-    paddingTop: 10,
+    paddingTop: 0,
   },
 });
 

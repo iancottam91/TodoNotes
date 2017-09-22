@@ -11,10 +11,11 @@ import TodoItem from './TodoItem';
 
 const styles = StyleSheet.create({
   myNotes: {
+    backgroundColor:"grey",
     flex: 1,
     alignSelf: 'stretch',
-    marginTop: 10,
-    padding: 10,
+    marginTop: 0,
+    padding: 5,
     borderWidth: 1,
   }
 });
@@ -57,8 +58,6 @@ export default class Items extends Component {
     })
 
     const filteredItems = items.filter(function(item){
-      console.log(item.tag);
-      console.log(tag);
       if(item.tag === tag || tag === 'all' || tag === ''){
         return true;
       }
